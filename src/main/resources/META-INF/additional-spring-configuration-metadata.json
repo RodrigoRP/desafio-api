@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "data.in",
+      "type": "java.lang.String",
+      "description": "Description for data.in."
+  }
+] }
