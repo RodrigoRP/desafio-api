@@ -15,31 +15,44 @@ import java.util.List;
 @RequestMapping({"api/v1/client"})
 public class CustomerController {
 
-    private final CustomerServiceImpl clientService;
+    private final CustomerServiceImpl customerService;
 
     @Autowired
-    public CustomerController(CustomerServiceImpl clientService) {
-        this.clientService = clientService;
+    public CustomerController(CustomerServiceImpl customerService) {
+        this.customerService = customerService;
     }
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody CustomerNewDTO customerNewDTO) {
-        Customer customer = clientService.convertToModel(customerNewDTO);
-        customer = clientService.save(customer);
+        Customer customer = customerService.convertToModel(customerNewDTO);
+        customer = customerService.save(customer);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(customer.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
+    @GetMapping(value="/{id}")
+    public ResponseEntity<Customer> find(@PathVariable Long id) {
+        Customer customer = customerService.find(id);
+        return ResponseEntity.ok().body(customer);
+    }
+
+
     @GetMapping
     public ResponseEntity<List<Customer>> findAll() {
-        List<Customer> customerList = clientService.findAll();
+        List<Customer> customerList = customerService.findAll();
         return ResponseEntity.ok().body(customerList);
+    }
+
+    @DeleteMapping(value="/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        customerService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/count")
     public Long getNumberOfClients() {
-        return clientService.getNumberOfClients();
+        return customerService.getNumberOfClients();
     }
 
 
