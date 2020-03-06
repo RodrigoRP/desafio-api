@@ -54,34 +54,23 @@ public class DatabaseService {
         this.saleService = saleService;
     }
 
-
     public void instantiateDatabase(String fileName) {
-
         String sourceFileStrAux = sourceFileStr + fileName;
-        try (BufferedReader br = new BufferedReader(new FileReader(sourceFileStrAux))) {
 
+        try (BufferedReader br = new BufferedReader(new FileReader(sourceFileStrAux))) {
             String itemCsv = br.readLine();
 
             while (itemCsv != null) {
                 StringTokenizer tokenizer = new StringTokenizer(itemCsv, DELIMITER);
                 String token = tokenizer.nextToken();
 
-                switch (token) {
-                    case CODE_SALESMAN:
-                        Salesman salesman = SalesmanParser.parse(tokenizer);
-                        salesmanRepository.save(salesman);
-                        break;
-                    case CODE_CUSTOMER:
-                        Customer customer = CustomerParser.parse(tokenizer);
-                        customerRepository.save(customer);
-                        break;
-                    case CODE_SALE:
-                        SaleNewDTO saleNewDTO = SaleParser.parse(tokenizer);
-                        Sale sale = saleService.convertToModel(saleNewDTO);
-                        saleRepository.save(sale);
-                        break;
-                    default:
-                        break;
+                if (CODE_SALESMAN.equals(token)) {
+                    salesmanRepository.save(SalesmanParser.parse(tokenizer));
+                } else if (CODE_CUSTOMER.equals(token)) {
+                    customerRepository.save(CustomerParser.parse(tokenizer));
+                } else if (CODE_SALE.equals(token)) {
+                    Sale sale = saleService.convertToModel(SaleParser.parse(tokenizer));
+                    saleRepository.save(sale);
                 }
                 itemCsv = br.readLine();
             }
@@ -92,22 +81,10 @@ public class DatabaseService {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
     private void generateReport() {
-
         String targetFileStrAux = targetFileStr + "report-" + LocalDate.now() + ".csv";
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(targetFileStrAux))) {
-
             long numberOfCustomers = customerRepository.count();
             long numberOfSalespeople = salesmanRepository.count();
             long idExpensiveSale = saleService.getIdMostExpensiveSale();
