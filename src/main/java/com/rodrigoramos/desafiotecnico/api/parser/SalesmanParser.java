@@ -2,7 +2,6 @@ package com.rodrigoramos.desafiotecnico.api.parser;
 
 import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 
-import java.math.BigDecimal;
 import java.util.StringTokenizer;
 
 public class SalesmanParser {

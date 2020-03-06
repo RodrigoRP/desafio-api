@@ -5,8 +5,6 @@ import com.rodrigoramos.desafiotecnico.api.service.validation.SaleInsert;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +13,8 @@ import java.util.List;
 @SaleInsert
 public class SaleNewDTO {
 
-    @NotNull(message = "Required Field")
     private Long saleId;
-
-    @NotEmpty(message = "Required Field")
     private List<SaleItem> saleItems = new ArrayList<>();
-
-    @NotNull(message = "Name cannot be null")
     private String salesmanName;
 
     public SaleNewDTO() {

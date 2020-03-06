@@ -1,10 +1,6 @@
 package com.rodrigoramos.desafiotecnico.api.service;
 
-import com.rodrigoramos.desafiotecnico.api.dto.SaleNewDTO;
-import com.rodrigoramos.desafiotecnico.api.model.Customer;
 import com.rodrigoramos.desafiotecnico.api.model.Sale;
-import com.rodrigoramos.desafiotecnico.api.model.Salesman;
-import com.rodrigoramos.desafiotecnico.api.model.enums.Identifier;
 import com.rodrigoramos.desafiotecnico.api.parser.CustomerParser;
 import com.rodrigoramos.desafiotecnico.api.parser.SaleParser;
 import com.rodrigoramos.desafiotecnico.api.parser.SalesmanParser;

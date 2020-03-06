@@ -14,4 +14,8 @@ public interface SalesmanService {
     Long getNumberOfSalespeople();
 
     Salesman findByName(Sale sale);
+
+    Salesman find(Long id);
+
+    void delete(Long id);
 }

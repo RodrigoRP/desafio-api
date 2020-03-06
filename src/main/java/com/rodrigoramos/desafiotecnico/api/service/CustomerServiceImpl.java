@@ -7,8 +7,6 @@ import com.rodrigoramos.desafiotecnico.api.service.exceptions.DataIntegrityExcep
 import com.rodrigoramos.desafiotecnico.api.service.exceptions.ObjectNotFoundException;
 import com.rodrigoramos.desafiotecnico.api.service.interfaces.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 

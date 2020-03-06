@@ -1,11 +1,14 @@
 package com.rodrigoramos.desafiotecnico.api.controller;
 
 
+import com.rodrigoramos.desafiotecnico.api.dto.CustomerNewDTO;
 import com.rodrigoramos.desafiotecnico.api.dto.SalesmanNewDTO;
+import com.rodrigoramos.desafiotecnico.api.model.Customer;
 import com.rodrigoramos.desafiotecnico.api.model.Sale;
 import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.service.SaleServiceImpl;
 import com.rodrigoramos.desafiotecnico.api.service.SalesmanServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +46,13 @@ public class SalesmanController {
         return ResponseEntity.ok().body(salesmanList);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Salesman> find(@PathVariable Long id) {
+        Salesman salesman = salesmanService.find(id);
+        return ResponseEntity.ok().body(salesman);
+    }
+
+
     @GetMapping(value = "/count")
     public Long getNumberOfSalespeople() {
         return salesmanService.getNumberOfSalespeople();
@@ -55,6 +65,21 @@ public class SalesmanController {
         Salesman salesman = salesmanService.findByName(sale);
         return ResponseEntity.ok().body(salesman);
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        salesmanService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Salesman> update(@PathVariable Long id, @Valid @RequestBody SalesmanNewDTO salesmanNewDTO) {
+        Salesman salesman = salesmanService.find(id);
+        BeanUtils.copyProperties(salesmanNewDTO, salesman, "id");
+        salesmanService.save(salesman);
+        return ResponseEntity.ok(salesman);
+    }
+
 
 
 }
