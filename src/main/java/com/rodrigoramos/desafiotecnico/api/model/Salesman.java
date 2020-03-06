@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -21,12 +20,12 @@ public class Salesman {
     private Long id;
     private String cpf;
     private String name;
-    private BigDecimal salary;
+    private Double salary;
 
     public Salesman() {
     }
 
-    public Salesman(Long id, String cpf, String name, BigDecimal salary) {
+    public Salesman(Long id, String cpf, String name, Double salary) {
         this.id = id;
         this.cpf = cpf;
         this.name = name;

@@ -11,7 +11,7 @@ public class SalesmanParser {
         Salesman salesman = new Salesman();
         salesman.setCpf(tokenizer.nextToken());
         salesman.setName(tokenizer.nextToken());
-        salesman.setSalary(new BigDecimal(tokenizer.nextToken()));
+        salesman.setSalary(Double.parseDouble(tokenizer.nextToken()));
 
         return salesman;
     }

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class SalesmanController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody SalesmanNewDTO salesmanNewDTO) {
+    public ResponseEntity<Void> save(@Valid @RequestBody SalesmanNewDTO salesmanNewDTO) {
         Salesman salesman = salesmanService.convertToModel(salesmanNewDTO);
         salesman = salesmanService.save(salesman);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
