@@ -31,4 +31,6 @@ public class SaleItem {
         this.quantity = quantity;
         this.price = price;
     }
+
+
 }

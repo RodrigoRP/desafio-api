@@ -30,7 +30,7 @@ public class Sale {
         this.salesmanName = salesmanName;
     }
 
-  /*  public void setSaleItems(List<SaleItem> saleItems) {
-        this.saleItems = saleItems;
-    }*/
+    public Double getValue(){
+        return saleItems.stream().mapToDouble(SaleItem::getPrice).sum();
+    }
 }

@@ -2,7 +2,6 @@ package com.rodrigoramos.desafiotecnico.api.service;
 
 import com.rodrigoramos.desafiotecnico.api.dto.SaleNewDTO;
 import com.rodrigoramos.desafiotecnico.api.model.Sale;
-import com.rodrigoramos.desafiotecnico.api.model.SaleItem;
 import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.repository.SaleRepository;
 import com.rodrigoramos.desafiotecnico.api.repository.SalesmanRepository;
@@ -10,6 +9,7 @@ import com.rodrigoramos.desafiotecnico.api.service.interfaces.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -19,7 +19,8 @@ public class SaleServiceImpl implements SaleService {
     private final SaleRepository saleRepository;
 
     @Autowired
-    public SaleServiceImpl(SalesmanRepository salesmanRepository, SaleRepository saleRepository) {
+    public SaleServiceImpl(SalesmanRepository salesmanRepository,
+                           SaleRepository saleRepository) {
         this.salesmanRepository = salesmanRepository;
         this.saleRepository = saleRepository;
     }
@@ -42,42 +43,12 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public Long getIdMostExpensiveSale() {
         List<Sale> saleList = saleRepository.findAll();
-        Sale biggestSale = new Sale();
-        double sumValue = Double.MIN_VALUE;
-        double sumValueAux;
-
-        for (Sale sale : saleList) {
-            sumValueAux = Double.MIN_VALUE;
-            for (SaleItem saleItem : sale.getSaleItems()) {
-                sumValueAux += saleItem.getPrice() * saleItem.getQuantity();
-            }
-            if (sumValueAux > sumValue) {
-                sumValue = sumValueAux;
-                biggestSale = sale;
-            }
-        }
-
-
-        return biggestSale.getId();
+        return saleList.stream().max(Comparator.comparing(Sale::getValue)).orElseThrow(RuntimeException::new).getId();
     }
 
     @Override
     public Sale getWorstSale() {
-        List<Sale> saleList2 = saleRepository.findAll();
-        Sale worstSale = new Sale();
-        double minValue = Double.MAX_VALUE;
-        double minValueAux;
-
-        for (Sale sale : saleList2) {
-            minValueAux = Double.MIN_VALUE;
-            for (SaleItem saleItem : sale.getSaleItems()) {
-                minValueAux += saleItem.getPrice() * saleItem.getQuantity();
-            }
-            if (minValue > minValueAux) {
-                minValue = minValueAux;
-                worstSale = sale;
-            }
-        }
-        return worstSale;
+        List<Sale> saleList = saleRepository.findAll();
+        return saleList.stream().min(Comparator.comparing(Sale::getValue)).orElseThrow(RuntimeException::new);
     }
 }
