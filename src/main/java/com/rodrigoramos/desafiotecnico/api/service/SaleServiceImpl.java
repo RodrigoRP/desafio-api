@@ -61,6 +61,7 @@ public class SaleServiceImpl implements SaleService {
         return biggestSale.getId();
     }
 
+    @Override
     public Sale getWorstSale() {
         List<Sale> saleList2 = saleRepository.findAll();
         Sale worstSale = new Sale();

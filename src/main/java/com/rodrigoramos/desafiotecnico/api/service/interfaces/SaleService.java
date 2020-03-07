@@ -12,7 +12,6 @@ public interface SaleService {
 
     Long getIdMostExpensiveSale();
 
-    //Sale getWorstSale();
-
+    Sale getWorstSale();
 
 }

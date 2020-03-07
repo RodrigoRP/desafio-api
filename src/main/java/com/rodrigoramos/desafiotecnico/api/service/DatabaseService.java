@@ -30,7 +30,7 @@ public class DatabaseService {
     private final CustomerRepository customerRepository;
     private final SaleRepository saleRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseService.class);
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseService.class);
 
     @Value("${data.caminho-entrada}")
     private String sourceFileStr;
@@ -70,10 +70,10 @@ public class DatabaseService {
                 }
                 itemCsv = br.readLine();
             }
-            LOGGER.info("File uploaded successfully!!!");
+            logger.info("File uploaded successfully!!!");
             generateReport();
         } catch (IOException e) {
-            LOGGER.error("Error reading file: {}", e.getMessage());
+            logger.error("Error reading file: {}", e.getMessage());
         }
     }
 
@@ -98,10 +98,10 @@ public class DatabaseService {
             bw.write("O pior vendedor: " + sale.getSalesmanName().toString());
             bw.newLine();
 
-            LOGGER.info(targetFileStr, " CREATED!");
+            logger.info(targetFileStr, " CREATED!");
 
         } catch (IOException e) {
-            LOGGER.error("Error writing file: {}", e.getMessage());
+            logger.error("Error writing file: {}", e.getMessage());
         }
     }
 }

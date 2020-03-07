@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DesafioTecnicoApiApplication implements CommandLineRunner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DesafioTecnicoApiApplication.class);
+    private static final Logger logger = LoggerFactory.getLogger(DesafioTecnicoApiApplication.class);
     public final WatcherService watcherService;
 
     @Autowired
@@ -25,7 +25,7 @@ public class DesafioTecnicoApiApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        LOGGER.info("I'm running - WatchService!!!");
+        logger.info("I'm running - WatchService!!!");
         new Thread(watcherService, "watcher-service").start();
     }
 }

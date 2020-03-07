@@ -13,7 +13,7 @@ import java.nio.file.*;
 public class WatcherService implements Runnable {
 
     private final DatabaseService databaseService;
-    private static final Logger LOGGER = LoggerFactory.getLogger(WatcherService.class);
+    private static final Logger logger = LoggerFactory.getLogger(WatcherService.class);
 
     @Value("${data.caminho-entrada}")
     private String pathStr;
@@ -41,7 +41,7 @@ public class WatcherService implements Runnable {
         WatchKey key;
         while ((key = watchService.take()) != null) {
             for (WatchEvent<?> event : key.pollEvents()) {
-                LOGGER.info("Event kind: {}. File affected: {}.", event.kind(), event.context());
+                logger.info("Event kind: {}. File affected: {}.", event.kind(), event.context());
                 if (event.kind().name().contains("ENTRY_CREATE")) {
                     databaseService.instantiateDatabase(event.context().toString());
                 }
