@@ -61,8 +61,8 @@ public class SalesmanController {
 
     @GetMapping(value = "/worst")
     public ResponseEntity<Salesman> getWorstSalesman() {
-        Sale sale = saleService.getWorstSale();
-        Salesman salesman = salesmanService.findByName(sale);
+        String worstSalesman = saleService.getWorstSalesman();
+        Salesman salesman = salesmanService.findByName(worstSalesman);
         return ResponseEntity.ok().body(salesman);
     }
 

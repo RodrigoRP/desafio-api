@@ -2,6 +2,7 @@ package com.rodrigoramos.desafiotecnico.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@ToString
 public class Sale {
 
     @Id
@@ -30,7 +32,9 @@ public class Sale {
         this.salesmanName = salesmanName;
     }
 
-    public Double getValue(){
-        return saleItems.stream().mapToDouble(SaleItem::getPrice).sum();
+    public Double getValue() {
+        return saleItems.stream()
+                .mapToDouble(SaleItem::getPrice)
+                .sum();
     }
 }

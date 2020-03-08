@@ -29,9 +29,7 @@ public class WatcherService implements Runnable {
     public void run() {
 
         WatchService watchService = FileSystems.getDefault().newWatchService();
-
         Path path = Paths.get(pathStr);
-
 
         path.register(watchService,
                 StandardWatchEventKinds.ENTRY_CREATE,

@@ -13,7 +13,7 @@ public interface SalesmanService {
 
     Long getNumberOfSalespeople();
 
-    Salesman findByName(Sale sale);
+    Salesman findByName(String name);
 
     Salesman find(Long id);
 

@@ -9,8 +9,8 @@ import com.rodrigoramos.desafiotecnico.api.service.interfaces.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class SaleServiceImpl implements SaleService {
@@ -43,12 +43,51 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public Long getIdMostExpensiveSale() {
         List<Sale> saleList = saleRepository.findAll();
-        return saleList.stream().max(Comparator.comparing(Sale::getValue)).orElseThrow(RuntimeException::new).getId();
+        return saleList
+                .stream()
+                .max(Comparator.comparing(Sale::getValue))
+                .orElseThrow(RuntimeException::new)
+                .getId();
     }
 
     @Override
-    public Sale getWorstSale() {
-        List<Sale> saleList = saleRepository.findAll();
-        return saleList.stream().min(Comparator.comparing(Sale::getValue)).orElseThrow(RuntimeException::new);
+    public String getWorstSalesman() {
+        Map<Salesman, Double> salesAmount = getSalesAmountBySalesman(groupBySalesman());
+
+        Salesman minSumSale = salesAmount
+                .entrySet()
+                .stream()
+                .min(Map.Entry.comparingByValue())
+                .orElseThrow(RuntimeException::new)
+                .getKey();
+
+        return minSumSale.getName();
     }
+
+    public Map<Salesman, List<Sale>> groupBySalesman() {
+        List<Sale> saleList = saleRepository.findAll();
+
+        return saleList
+                .stream()
+                .collect(Collectors.groupingBy(Sale::getSalesmanName));
+    }
+
+    private Map<Salesman, Double> getSalesAmountBySalesman(Map<Salesman, List<Sale>> salesBySalesman) {
+        Map<Salesman, Double> totalBySalesman = new HashMap<>();
+
+        salesBySalesman.forEach((salesman, sellList) -> {
+            totalBySalesman.put(salesman, getTotalSellList(sellList));
+        });
+
+        return totalBySalesman;
+    }
+
+    private Double getTotalSellList(List<Sale> salesBySalesman) {
+
+        return salesBySalesman.stream()
+                .mapToDouble(Sale::getValue)
+                .sum();
+    }
+
+
 }

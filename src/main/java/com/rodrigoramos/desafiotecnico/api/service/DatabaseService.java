@@ -56,10 +56,9 @@ public class DatabaseService {
         try (BufferedReader br = new BufferedReader(new FileReader(sourceFileStrAux))) {
             String itemCsv = br.readLine();
 
-            while (itemCsv != null) {
+            while (itemCsv != null && !itemCsv.isEmpty()) {
                 StringTokenizer tokenizer = new StringTokenizer(itemCsv, DELIMITER);
                 String token = tokenizer.nextToken();
-
                 if (CODE_SALESMAN.equals(token)) {
                     salesmanRepository.save(SalesmanParser.parse(tokenizer));
                 } else if (CODE_CUSTOMER.equals(token)) {
@@ -70,11 +69,13 @@ public class DatabaseService {
                 }
                 itemCsv = br.readLine();
             }
+            //generateReport();
             logger.info("File uploaded successfully!!!");
-            generateReport();
+
         } catch (IOException e) {
             logger.error("Error reading file: {}", e.getMessage());
         }
+
     }
 
     private void generateReport() {
@@ -84,7 +85,7 @@ public class DatabaseService {
             long numberOfCustomers = customerRepository.count();
             long numberOfSalespeople = salesmanRepository.count();
             long idExpensiveSale = saleService.getIdMostExpensiveSale();
-            Sale sale = saleService.getWorstSale();
+            String worstSalesman = saleService.getWorstSalesman();
 
             bw.write("Quantidade de clientes no arquivo de entrada: " + numberOfCustomers);
             bw.newLine();
@@ -95,7 +96,7 @@ public class DatabaseService {
             bw.write("ID da venda mais cara: " + idExpensiveSale);
             bw.newLine();
 
-            bw.write("O pior vendedor: " + sale.getSalesmanName().toString());
+            bw.write("O pior vendedor: " + worstSalesman);
             bw.newLine();
 
             logger.info(targetFileStr, " CREATED!");

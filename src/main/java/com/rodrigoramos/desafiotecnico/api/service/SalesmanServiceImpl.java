@@ -40,8 +40,8 @@ public class SalesmanServiceImpl implements SalesmanService {
     }
 
     @Override
-    public Salesman findByName(Sale sale) {
-        return salesmanRepository.findByName(sale.getSalesmanName().getName());
+    public Salesman findByName(String name) {
+        return salesmanRepository.findByName(name);
     }
 
     @Override
