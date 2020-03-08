@@ -1,10 +1,6 @@
 package com.rodrigoramos.desafiotecnico.api.controller;
 
-
-import com.rodrigoramos.desafiotecnico.api.dto.CustomerNewDTO;
 import com.rodrigoramos.desafiotecnico.api.dto.SalesmanNewDTO;
-import com.rodrigoramos.desafiotecnico.api.model.Customer;
-import com.rodrigoramos.desafiotecnico.api.model.Sale;
 import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.service.SaleServiceImpl;
 import com.rodrigoramos.desafiotecnico.api.service.SalesmanServiceImpl;
@@ -52,12 +48,10 @@ public class SalesmanController {
         return ResponseEntity.ok().body(salesman);
     }
 
-
     @GetMapping(value = "/count")
     public Long getNumberOfSalespeople() {
         return salesmanService.getNumberOfSalespeople();
     }
-
 
     @GetMapping(value = "/worst")
     public ResponseEntity<Salesman> getWorstSalesman() {
@@ -79,7 +73,6 @@ public class SalesmanController {
         salesmanService.save(salesman);
         return ResponseEntity.ok(salesman);
     }
-
 
 
 }

@@ -1,7 +1,6 @@
 package com.rodrigoramos.desafiotecnico.api.service;
 
 import com.rodrigoramos.desafiotecnico.api.dto.SalesmanNewDTO;
-import com.rodrigoramos.desafiotecnico.api.model.Sale;
 import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.repository.SalesmanRepository;
 import com.rodrigoramos.desafiotecnico.api.service.exceptions.DataIntegrityException;

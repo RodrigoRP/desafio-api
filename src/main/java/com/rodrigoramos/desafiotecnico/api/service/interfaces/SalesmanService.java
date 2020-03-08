@@ -1,6 +1,5 @@
 package com.rodrigoramos.desafiotecnico.api.service.interfaces;
 
-import com.rodrigoramos.desafiotecnico.api.model.Sale;
 import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 
 import java.util.List;
