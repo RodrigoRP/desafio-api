@@ -69,7 +69,6 @@ public class DatabaseService {
                 }
                 itemCsv = br.readLine();
             }
-            //generateReport();
             logger.info("File uploaded successfully!!!");
 
         } catch (IOException e) {
@@ -78,7 +77,7 @@ public class DatabaseService {
 
     }
 
-    private void generateReport() {
+    public void generateReport() {
         String targetFileStrAux = targetFileStr + "report-" + LocalDate.now() + ".csv";
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(targetFileStrAux))) {
@@ -104,5 +103,6 @@ public class DatabaseService {
         } catch (IOException e) {
             logger.error("Error writing file: {}", e.getMessage());
         }
+
     }
 }

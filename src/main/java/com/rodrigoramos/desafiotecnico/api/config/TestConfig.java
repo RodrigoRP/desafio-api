@@ -24,6 +24,7 @@ public class TestConfig {
     @Bean
     public boolean instantiateDatabase() {
         dbService.instantiateDatabase(pathStr);
+        dbService.generateReport();
         return true;
     }
 
