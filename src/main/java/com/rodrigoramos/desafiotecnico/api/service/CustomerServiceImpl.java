@@ -54,7 +54,7 @@ public class CustomerServiceImpl implements CustomerService {
         return new Customer(null, customerNewDTO.getCnpj(), customerNewDTO.getName(), customerNewDTO.getBusinessArea());
     }
 
-    public Long getNumberOfClients() {
+    public Long getNumberOfCustomers() {
         return customerRepository.count();
     }
 }

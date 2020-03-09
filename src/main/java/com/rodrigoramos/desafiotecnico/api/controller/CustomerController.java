@@ -61,8 +61,8 @@ public class CustomerController {
     }
 
     @GetMapping(value = "/count")
-    public Long getNumberOfClients() {
-        return customerService.getNumberOfClients();
+    public Long getNumberOfCustomers() {
+        return customerService.getNumberOfCustomers();
     }
 
 

@@ -103,7 +103,7 @@ public class CustomerServiceTest {
         Customer user2 = new Customer(1L, "85424488000137", "Maria", "Rural");
 
         // when
-        Long foundCustomer = customerService.getNumberOfClients();
+        Long foundCustomer = customerService.getNumberOfCustomers();
 
         // then
         assertThat(foundCustomer).isNotNull();

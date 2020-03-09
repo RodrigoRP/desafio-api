@@ -1,6 +1,7 @@
 package com.rodrigoramos.desafiotecnico.api.service;
 
 import com.rodrigoramos.desafiotecnico.api.model.Sale;
+import com.rodrigoramos.desafiotecnico.api.model.enums.Identifier;
 import com.rodrigoramos.desafiotecnico.api.parser.CustomerParser;
 import com.rodrigoramos.desafiotecnico.api.parser.SaleParser;
 import com.rodrigoramos.desafiotecnico.api.parser.SalesmanParser;
@@ -21,9 +22,6 @@ import java.util.StringTokenizer;
 public class DatabaseService {
 
     private static final String DELIMITER = "ç";
-    private static final String CODE_SALESMAN = "001";
-    private static final String CODE_CUSTOMER = "002";
-    private static final String CODE_SALE = "003";
 
     private final SaleServiceImpl saleService;
     private final SalesmanRepository salesmanRepository;
@@ -58,12 +56,12 @@ public class DatabaseService {
 
             while (itemCsv != null && !itemCsv.isEmpty()) {
                 StringTokenizer tokenizer = new StringTokenizer(itemCsv, DELIMITER);
-                String token = tokenizer.nextToken();
-                if (CODE_SALESMAN.equals(token)) {
+                int token = Integer.parseInt(tokenizer.nextToken());
+                if (Identifier.SALESMAN.getCod() == token) {
                     salesmanRepository.save(SalesmanParser.parse(tokenizer));
-                } else if (CODE_CUSTOMER.equals(token)) {
+                } else if (Identifier.CUSTOMER.getCod() == token) {
                     customerRepository.save(CustomerParser.parse(tokenizer));
-                } else if (CODE_SALE.equals(token)) {
+                } else if (Identifier.SALE.getCod() == token) {
                     Sale sale = saleService.convertToModel(SaleParser.parse(tokenizer));
                     saleRepository.save(sale);
                 }

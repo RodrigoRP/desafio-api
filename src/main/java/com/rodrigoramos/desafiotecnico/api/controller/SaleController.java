@@ -3,6 +3,7 @@ package com.rodrigoramos.desafiotecnico.api.controller;
 
 import com.rodrigoramos.desafiotecnico.api.dto.SaleNewDTO;
 import com.rodrigoramos.desafiotecnico.api.model.Sale;
+import com.rodrigoramos.desafiotecnico.api.service.DatabaseService;
 import com.rodrigoramos.desafiotecnico.api.service.SaleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,13 @@ import java.util.List;
 public class SaleController {
 
     private final SaleServiceImpl saleService;
+    private final DatabaseService databaseService;
+
 
     @Autowired
-    public SaleController(SaleServiceImpl saleService) {
+    public SaleController(SaleServiceImpl saleService, DatabaseService databaseService) {
         this.saleService = saleService;
+        this.databaseService = databaseService;
     }
 
     @PostMapping
@@ -40,8 +44,15 @@ public class SaleController {
     }
 
     @GetMapping(value = "/expensive")
-    public Long getMostExpensiveSale() {
-        return saleService.getIdMostExpensiveSale();
+    public ResponseEntity<Long> getIdMostExpensiveSale() {
+        Long idMostExpensiveSale = saleService.getIdMostExpensiveSale();
+        return ResponseEntity.ok().body(idMostExpensiveSale);
+    }
+
+    @GetMapping(value = "/reportGenerate")
+    public ResponseEntity<Void> reportGenerate() {
+        databaseService.generateReport();
+        return ResponseEntity.noContent().build();
     }
 
 
