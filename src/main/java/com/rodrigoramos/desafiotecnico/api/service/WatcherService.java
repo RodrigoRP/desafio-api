@@ -42,6 +42,7 @@ public class WatcherService implements Runnable {
                 logger.info("Event kind: {}. File affected: {}.", event.kind(), event.context());
                 if (event.kind().name().contains("ENTRY_CREATE")) {
                     databaseService.instantiateDatabase(event.context().toString());
+                    databaseService.generateReport();
                 }
             }
             key.reset();
