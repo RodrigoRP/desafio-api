@@ -1,8 +1,8 @@
 {
   "properties": [
-    {
-      "name": "data.in",
+   {
+      "name": "data.carga-inicial",
       "type": "java.lang.String",
-      "description": "Description for data.in."
-  }
-] }
+      "description": "Nome do arquivo ao ser carregado ao inicializar a aplicacao.."
+    }
+  ] }
