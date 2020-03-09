@@ -7,6 +7,7 @@
 - Uma venda é salva apenas se o vendedor estiver cadastrado
 - Ao gerar o projeto, automaticamente o banco H2 é populado com o arquivo que se encontra na pasta ...//in/ 
 - Foram realizados testes na camada de servico.
+- Os caminhos estao no arquivo de propriedades //resource//application-test.properties
 - É possivel registrar novos dados a partir dos enpoints, o relatorio é gerado automaticamente apenas quando inserido
 novos arquivos no diretorio padrao, caso seja inserido via endpoint foi criado um endpoint especifico para gerar novo relatorio.
 
