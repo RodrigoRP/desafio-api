@@ -1,101 +1,127 @@
 package com.rodrigoramos.desafiotecnico.api.service;
 
+
 import com.rodrigoramos.desafiotecnico.api.dto.CustomerNewDTO;
 import com.rodrigoramos.desafiotecnico.api.model.Customer;
-import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.repository.CustomerRepository;
-import com.rodrigoramos.desafiotecnico.api.service.exceptions.ObjectNotFoundException;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import org.mockito.Mockito;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@Transactional
+@DirtiesContext
 public class CustomerServiceTest {
 
-    @Mock
-    private CustomerRepository customerRepository;
-
-    @InjectMocks
+    @Autowired
     private CustomerServiceImpl customerService;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @Test
-    public void savesCustomer() {
-        Customer actual = new Customer(null, "85424488000137", "João", "Rural");
+    public void shouldCreateCustomer() {
+        // given
+        Customer customer = new Customer(null, "85424488000137", "João", "Rural");
 
-        Customer expected = new Customer(null, actual.getCnpj(), actual.getName(), actual.getBusinessArea());
-        when(customerRepository.findById(1L)).thenReturn(Optional.of(expected));
+        // when
+        Customer savedCustomer = customerService.save(customer);
 
-        Customer entity = new Customer(null, actual.getCnpj(), actual.getName(), actual.getBusinessArea());
-        when(customerRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        // then
 
-        Customer actual2 = customerService.save(actual);
+        assertSoftly(softly -> {
+            softly.assertThat(savedCustomer).isNotNull();
+            softly.assertThat(savedCustomer.getBusinessArea()).isEqualTo(customer.getBusinessArea());
+            softly.assertThat(savedCustomer.getName()).isEqualTo(customer.getName());
+            softly.assertThat(savedCustomer.getId()).isNotNull();
+            softly.assertThat(savedCustomer.getCnpj()).isEqualTo("85424488000137");
+        });
+    }
 
-        assertThat(actual2).isEqualToComparingFieldByField(expected);
+    @Test
+    public void shouldDeleteCustomer() {
+        // given
+        Customer savedCustomer = new Customer(1L, "85424488000137", "João", "Rural");
+        assertThat(customerRepository.findById(savedCustomer.getId())).isNotNull();
+
+        // when
+        customerService.delete(savedCustomer.getId());
+
+        // then
+        assertThat(customerRepository.findById(savedCustomer.getId())).isNotPresent();
+
+    }
+
+
+    @Test
+    public void shouldFindById() {
+        // given
+        Customer savedCustomer = new Customer(1L, "85424488000137", "João", "Rural");
+
+        // when
+        Customer foundCustomer = customerService.find(savedCustomer.getId());
+
+        // then
+        assertThat(foundCustomer).isNotNull();
+        assertThat(foundCustomer.getId()).isEqualTo(savedCustomer.getId());
 
     }
 
     @Test
-    public void findsAnyCustomerById() {
+    public void shouldFindAll() {
+        // given
+        Customer savedCustomer1 = new Customer(1L, "85424488000137", "João", "Rural");
+        Customer savedCustomer2 = new Customer(2L, "85424488000137", "Maria", "Rural");
 
+        customerService.save(savedCustomer1);
+        customerService.save(savedCustomer2);
+
+
+        // when
+        List<Customer> customers = customerService.findAll();
+
+        // then
+        assertThat(customers.stream().map(Customer::getId).collect(Collectors.toList())).contains(1L, 2L);
+
+    }
+
+    @Test
+    public void shouldReturnAllCustomers() {
+        // given
+        Customer user1 = new Customer(1L, "85424488000137", "João", "Rural");
+        Customer user2 = new Customer(1L, "85424488000137", "Maria", "Rural");
+
+        // when
+        Long foundCustomer = customerService.getNumberOfClients();
+
+        // then
+        assertThat(foundCustomer).isNotNull();
+        assertThat(2L).isEqualTo(foundCustomer);
+    }
+
+
+    @Test
+    public void shouldConvertDtoToModel() {
+        // given
         Customer expected = new Customer(null, "85424488000137", "João", "Rural");
-        when(customerRepository.findById(1L)).thenReturn(Optional.of((expected)));
 
-        Customer actual = customerService.find(1L);
-        assertThat(expected).isEqualToComparingFieldByField(actual);
-    }
-
-    @Test(expected = ObjectNotFoundException.class)
-    public void throwsExceptionWhenInvalidCustomerRequestedById() {
-        when(customerRepository.findById(1L)).thenReturn(Optional.empty());
-        customerService.find(1L);
-    }
-
-    @Test
-    public void findsAllCustomers() {
-        List<Customer> customerList = new ArrayList<>();
-        Customer user = new Customer(null, "85424488000137", "João", "Rural");
-        customerList.add(user);
-        when(customerRepository.findAll()).thenReturn(customerList);
-        List<Customer> actual = customerService.findAll();
-        assertThat(actual, contains(hasProperty("name", Matchers.is("João"))));
-    }
-
-    @Test
-    public void convertDtoToModel() {
-        Customer expected = new Customer(null, "85424488000137", "João", "Rural");
-
+        // when
         CustomerNewDTO dto = new CustomerNewDTO(expected.getCnpj(), expected.getName(), expected.getBusinessArea());
 
+        // then
         assertThat(expected).isEqualToComparingFieldByField(customerService.convertToModel(dto));
     }
-
-    @Test
-    public void getsNumberOfCustomers() {
-        List<Customer> customerList = new ArrayList<>();
-        Customer user = new Customer(null, "85424488000137", "João", "Rural");
-        customerList.add(user);
-
-        when(customerService.getNumberOfClients()).thenReturn(1L);
-    }
-
 
 
 }
