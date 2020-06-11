@@ -3,7 +3,6 @@ package com.rodrigoramos.desafiotecnico.api.service;
 
 import com.rodrigoramos.desafiotecnico.api.dto.CustomerNewDTO;
 import com.rodrigoramos.desafiotecnico.api.model.Customer;
-import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.repository.CustomerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
