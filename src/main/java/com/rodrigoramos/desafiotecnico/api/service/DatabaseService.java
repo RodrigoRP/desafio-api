@@ -1,6 +1,7 @@
 package com.rodrigoramos.desafiotecnico.api.service;
 
 import com.rodrigoramos.desafiotecnico.api.model.Sale;
+import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.model.enums.Identifier;
 import com.rodrigoramos.desafiotecnico.api.parser.CustomerParser;
 import com.rodrigoramos.desafiotecnico.api.parser.SaleParser;
@@ -58,7 +59,10 @@ public class DatabaseService {
                 StringTokenizer tokenizer = new StringTokenizer(itemCsv, DELIMITER);
                 int token = Integer.parseInt(tokenizer.nextToken());
                 if (Identifier.SALESMAN.getCod() == token) {
-                    salesmanRepository.save(SalesmanParser.parse(tokenizer));
+                    Salesman salesman = SalesmanParser.parse(tokenizer);
+                    Salesman name = salesmanRepository.findByName(salesman.getName());
+                    if (name == null)
+                        salesmanRepository.save(salesman);
                 } else if (Identifier.CUSTOMER.getCod() == token) {
                     customerRepository.save(CustomerParser.parse(tokenizer));
                 } else if (Identifier.SALE.getCod() == token) {
@@ -76,13 +80,15 @@ public class DatabaseService {
     }
 
     public void generateReport() {
-        String targetFileStrAux = targetFileStr + "report-" + LocalDate.now() + ".csv";
+        String targetFileStrAux = targetFileStr + "report-" + LocalDate.now() + ".done.dat";
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(targetFileStrAux))) {
             long numberOfCustomers = customerRepository.count();
             long numberOfSalespeople = salesmanRepository.count();
             long idExpensiveSale = saleService.getIdMostExpensiveSale();
-            String worstSalesman = saleService.getWorstSalesman();
+            String worstSalesman = "No salesman registered";
+            if (numberOfSalespeople > 0)
+                worstSalesman = saleService.getWorstSalesman();
 
             bw.write("Quantidade de clientes no arquivo de entrada: " + numberOfCustomers);
             bw.newLine();

@@ -6,9 +6,14 @@ import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.repository.SalesmanRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,22 +112,27 @@ public class SalesmanServiceTest {
         List<Salesman> salesmen = salesmanService.findAll();
 
         // then
-        assertThat(salesmen.stream().map(Salesman::getId).collect(Collectors.toList())).contains(1L, 2L);
+        assertThat(salesmen.stream().map(Salesman::getId).collect(Collectors.toList()))
+                .contains(savedSalesman1.getId(), savedSalesman2.getId());
 
     }
 
     @Test
-    public void shouldReturnAllSalesman() {
+    public void shouldReturnNumberOfSalesman() {
         // given
-        Salesman savedSalesman1 = new Salesman(1L, "85424488000137", "João", 45000.00);
-        Salesman savedSalesman2 = new Salesman(2L, "85424488000137", "Maria", 45000.00);
+        Salesman savedSalesman1 = new Salesman(null, "85424488000137", "João", 45000.00);
+        Salesman savedSalesman2 = new Salesman(null, "85424488000137", "Maria", 45000.00);
+
+        salesmanService.save(savedSalesman1);
+        salesmanService.save(savedSalesman2);
 
         // when
         Long foundCustomer = salesmanService.getNumberOfSalespeople();
+        List<Salesman> salesmen = salesmanService.findAll();
 
         // then
         assertThat(foundCustomer).isNotNull();
-        assertThat(2L).isEqualTo(foundCustomer);
+        assertThat(salesmen.size()).isEqualTo(foundCustomer.intValue());
     }
 
 

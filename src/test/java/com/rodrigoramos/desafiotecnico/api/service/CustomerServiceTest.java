@@ -3,6 +3,7 @@ package com.rodrigoramos.desafiotecnico.api.service;
 
 import com.rodrigoramos.desafiotecnico.api.dto.CustomerNewDTO;
 import com.rodrigoramos.desafiotecnico.api.model.Customer;
+import com.rodrigoramos.desafiotecnico.api.model.Salesman;
 import com.rodrigoramos.desafiotecnico.api.repository.CustomerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -99,15 +100,16 @@ public class CustomerServiceTest {
     @Test
     public void shouldReturnAllCustomers() {
         // given
-        Customer user1 = new Customer(1L, "85424488000137", "João", "Rural");
-        Customer user2 = new Customer(1L, "85424488000137", "Maria", "Rural");
+        Customer user1 = new Customer(null, "85424488000137", "João", "Rural");
+        Customer user2 = new Customer(null, "85424488000137", "Maria", "Rural");
 
         // when
         Long foundCustomer = customerService.getNumberOfCustomers();
+        List<Customer> salesmen = customerService.findAll();
 
         // then
         assertThat(foundCustomer).isNotNull();
-        assertThat(2L).isEqualTo(foundCustomer);
+        assertThat(salesmen.size()).isEqualTo(foundCustomer.intValue());
     }
 
 

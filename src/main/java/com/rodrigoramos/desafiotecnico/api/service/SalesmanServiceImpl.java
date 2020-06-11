@@ -25,7 +25,11 @@ public class SalesmanServiceImpl implements SalesmanService {
 
     @Override
     public Salesman save(Salesman salesman) {
-        return salesmanRepository.save(salesman);
+        Salesman name = findByName(salesman.getName());
+        if (name == null) {
+            return salesmanRepository.save(salesman);
+        }
+        return name;
     }
 
     @Override

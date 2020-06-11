@@ -38,13 +38,13 @@ public class SaleServiceTest {
     @Test
     public void shouldReturnWorstSalesman() {
         // given
-        Salesman salesman1 = new Salesman(1L, "43125821061", "Maria", 45000.00);
+        Salesman salesman1 = new Salesman(null, "43125821061", "Maria", 45000.00);
         Salesman salesman1Saved = salesmanService.save(salesman1);
-        Salesman salesman2 = new Salesman(2L, "43125821061", "Ricardo", 45000.00);
+        Salesman salesman2 = new Salesman(null, "43125821061", "Edward is the worst salesman", 45000.00);
         Salesman salesman2Saved = salesmanService.save(salesman2);
 
 
-        SaleItem saleItem1 = new SaleItem(null, 1, 1, 10.0);
+        SaleItem saleItem1 = new SaleItem(null, 1, 0, -1.00);
         SaleItem saleItem2 = new SaleItem(null, 1, 1, 100.0);
         List<SaleItem> items1 = new ArrayList<>();
         items1.add(saleItem1);
@@ -60,7 +60,7 @@ public class SaleServiceTest {
 
 
         // when
-        String expected = "Ricardo";
+        String expected = salesman2.getName();
         String nameWorstSalesman = saleService.getWorstSalesman();
 
         // then
