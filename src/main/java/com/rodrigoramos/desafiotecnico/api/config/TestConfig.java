@@ -31,11 +31,11 @@ public class TestConfig {
         boolean fileExists = Boolean.FALSE;
         File folder = new File(pathStr);
         File[] listOfFiles = folder.listFiles();
-        for (int i = 0; i < listOfFiles.length; i++) {
-            String extension = getFileExtension(listOfFiles[i]);
-            if (listOfFiles[i].isFile() && extension.equals("dat")) {
-                dbService.instantiateDatabase(listOfFiles[i].getName());
-                logger.info("File: {}.", listOfFiles[i].getName());
+        for (File listOfFile : listOfFiles) {
+            String extension = getFileExtension(listOfFile);
+            if (listOfFile.isFile() && extension.equals("dat")) {
+                dbService.instantiateDatabase(listOfFile.getName());
+                logger.info("File: {}.", listOfFile.getName());
                 fileExists = Boolean.TRUE;
             }
         }
@@ -44,7 +44,7 @@ public class TestConfig {
         return true;
     }
 
-    private String getFileExtension(File file) {
+    public static String getFileExtension(File file) {
         String fileName = file.getName();
         String strDot = ".";
 

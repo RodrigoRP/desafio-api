@@ -1,5 +1,6 @@
 package com.rodrigoramos.desafiotecnico.api.service;
 
+import com.rodrigoramos.desafiotecnico.api.config.TestConfig;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.nio.file.*;
 
 @Service
@@ -40,7 +42,9 @@ public class WatcherService implements Runnable {
         while ((key = watchService.take()) != null) {
             for (WatchEvent<?> event : key.pollEvents()) {
                 logger.info("Event kind: {}. File affected: {}.", event.kind(), event.context());
-                if (event.kind().name().contains("ENTRY_CREATE")) {
+                String fileExtension = TestConfig.getFileExtension(new File(event.context().toString()));
+                if (event.kind().name().contains("ENTRY_CREATE") && fileExtension.equals("dat")) {
+                    String s = event.context().toString();
                     databaseService.instantiateDatabase(event.context().toString());
                     databaseService.generateReport();
                 }
