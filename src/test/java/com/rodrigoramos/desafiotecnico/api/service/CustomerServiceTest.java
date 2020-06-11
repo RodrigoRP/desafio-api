@@ -53,7 +53,8 @@ public class CustomerServiceTest {
     @Test
     public void shouldDeleteCustomer() {
         // given
-        Customer savedCustomer = new Customer(1L, "85424488000137", "João", "Rural");
+        Customer savedCustomer = new Customer(null, "85424488000137", "João", "Rural");
+        customerService.save(savedCustomer);
         assertThat(customerRepository.findById(savedCustomer.getId())).isNotNull();
 
         // when
@@ -68,7 +69,8 @@ public class CustomerServiceTest {
     @Test
     public void shouldFindById() {
         // given
-        Customer savedCustomer = new Customer(1L, "85424488000137", "João", "Rural");
+        Customer savedCustomer = new Customer(null, "85424488000137", "João", "Rural");
+        customerService.save(savedCustomer);
 
         // when
         Customer foundCustomer = customerService.find(savedCustomer.getId());
@@ -82,8 +84,8 @@ public class CustomerServiceTest {
     @Test
     public void shouldFindAll() {
         // given
-        Customer savedCustomer1 = new Customer(1L, "85424488000137", "João", "Rural");
-        Customer savedCustomer2 = new Customer(2L, "85424488000137", "Maria", "Rural");
+        Customer savedCustomer1 = new Customer(null, "85424488000137", "João", "Rural");
+        Customer savedCustomer2 = new Customer(null, "85424488000137", "Maria", "Rural");
 
         customerService.save(savedCustomer1);
         customerService.save(savedCustomer2);
@@ -93,7 +95,8 @@ public class CustomerServiceTest {
         List<Customer> customers = customerService.findAll();
 
         // then
-        assertThat(customers.stream().map(Customer::getId).collect(Collectors.toList())).contains(1L, 2L);
+        assertThat(customers.stream().map(Customer::getId).collect(Collectors.toList()))
+                .contains(savedCustomer1.getId(), savedCustomer2.getId());
 
     }
 

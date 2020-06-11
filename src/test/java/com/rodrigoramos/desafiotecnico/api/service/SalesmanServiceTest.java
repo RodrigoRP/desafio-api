@@ -57,7 +57,8 @@ public class SalesmanServiceTest {
     @Test
     public void shouldDeleteSalesman() {
         // given
-        Salesman salesman = new Salesman(1L, "85424488000137", "João", 45000.00);
+        Salesman salesman = new Salesman(null, "85424488000137", "João", 45000.00);
+        salesmanService.save(salesman);
         assertThat(salesmanRepository.findById(salesman.getId())).isNotNull();
 
         // when
@@ -72,7 +73,8 @@ public class SalesmanServiceTest {
     @Test
     public void shouldFindById() {
         // given
-        Salesman savedSalesman = new Salesman(1L, "85424488000137", "João", 45000.00);
+        Salesman savedSalesman = new Salesman(null, "85424488000137", "João", 45000.00);
+        salesmanService.save(savedSalesman);
 
         // when
         Salesman foundSalesman = salesmanService.find(savedSalesman.getId());
@@ -101,8 +103,8 @@ public class SalesmanServiceTest {
     @Test
     public void shouldFindAll() {
         // given
-        Salesman savedSalesman1 = new Salesman(1L, "85424488000137", "João", 45000.00);
-        Salesman savedSalesman2 = new Salesman(2L, "85424488000137", "Maria", 45000.00);
+        Salesman savedSalesman1 = new Salesman(null, "85424488000137", "João", 45000.00);
+        Salesman savedSalesman2 = new Salesman(null, "85424488000137", "Maria", 45000.00);
 
         salesmanService.save(savedSalesman1);
         salesmanService.save(savedSalesman2);
